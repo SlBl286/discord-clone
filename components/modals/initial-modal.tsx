@@ -9,9 +9,17 @@ import {
 } from "@radix-ui/react-dialog";
 import { DialogFooter, DialogHeader } from "../ui/dialog";
 import { useForm } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { useEffect, useState } from "react";
 
 const formShema = z.object({
   name: z.string().min(1, {
@@ -23,6 +31,11 @@ const formShema = z.object({
 });
 
 export const InitialModal = () => {
+  const [isMount, setIsMount] = useState(false);
+
+  useEffect(() => {
+    setIsMount(true);
+  }, []);
   const form = useForm({
     resolver: zodResolver(formShema),
     defaultValues: {
@@ -36,6 +49,10 @@ export const InitialModal = () => {
   const onSubmit = async (values: z.infer<typeof formShema>) => {
     console.log(values);
   };
+
+  if (!isMount) {
+    return null;
+  }
   return (
     <Dialog open>
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
@@ -69,13 +86,16 @@ export const InitialModal = () => {
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             ></FormField>
           </form>
         </Form>
         <DialogFooter className="bg-gray-100 px-6 py-4">
-          <Button disabled={isLoading}> Create server</Button>
+          <Button variant={"primary"} disabled={isLoading}>
+            Create
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
