@@ -20,8 +20,7 @@ const SetupPage = async () => {
   }
   return (
     <>
-    <InitialModal/>
-      <div>Create a Server</div>
+      <InitialModal />
     </>
   );
 };
